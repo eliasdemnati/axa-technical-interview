@@ -1,0 +1,17 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.search-container {
+  display: flex; 
+  gap: 1rem;
+  justify-content: center;
+}
+
+
+.search-container input {
+  width: 50%;
+}

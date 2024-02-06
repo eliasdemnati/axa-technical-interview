@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  database:
+    build: database/
+    environment:
+      POSTGRES_DB: titanic
+      POSTGRES_USER: titanic
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  backend:
+    build: titanic-viewer-back/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: titanic
+      POSTGRES_USER: titanic
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+    networks:
+      - app_network
+
+  frontend:
+    build: titanic-viewer-front/
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - app_network
+
+volumes:
+  postgres-data:
+
+networks:
+  app_network:
+    driver: bridge
+
